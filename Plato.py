@@ -1,3 +1,13 @@
+class bcolors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 class Plato:
     moveList = ["m", "move", "i", "ileri"]
     
@@ -23,7 +33,7 @@ class Plato:
         try:
             self.directionList.index(direction)
         except ValueError:
-            print("ValueError: Please enter the initial direction correctly. ( n | w | s | e )")
+            print(bcolors.FAIL + "ValueError: Please enter the initial direction correctly. ( n | w | s | e )" + bcolors.ENDC)
             exit()
 
         self.direction = direction
@@ -69,7 +79,7 @@ class Plato:
 
             # Eğer printStage ise her stage sonunda ekrana map'i bastır
             if self.printStage:
-                print("  ",instruction)
+                print("  ", bcolors.WARNING + instruction + bcolors.ENDC)
                 self._print_map()
         
         # Eğer printStage değil ise map'in son şeklini bastır
@@ -100,10 +110,10 @@ class Plato:
                     self.map[column - 1][row] = value
                 else:
                     self.terminate = True
-                    print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                    print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
             except IndexError:
                 self.terminate = True
-                print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
 
         # Eğer şuan rover s'a bakıyorsa
         if value == 3:
@@ -114,7 +124,7 @@ class Plato:
                 self.map[column + 1][row] = value
             except IndexError:
                 self.terminate = True
-                print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
         
         # Eğer şuan rover w'e bakıyorsa
         if value == 2:
@@ -126,10 +136,10 @@ class Plato:
                     self.map[column][row - 1] = value
                 else:
                     self.terminate = True
-                    print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                    print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
             except IndexError:
                 self.terminate = True
-                print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
         
         # Eğer şuan rover e'e bakıyorsa
         if value == 4:
@@ -140,7 +150,7 @@ class Plato:
                 self.map[column][row + 1] = value
             except IndexError:
                 self.terminate = True
-                print(f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )")
+                print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
 
     def rotate(self, direction):
         
@@ -178,26 +188,28 @@ class Plato:
         del self.map
         self.map = []
         self._init_map(self.size, self.position)
-        print("Reset\n")
+        print(bcolors.HEADER + "Reset\n" + bcolors.ENDC)
 
     # Map'i ve rover'i ekrana bastır
     def _print_map(self):
         print("  ", end="")
-        print("- " * len(self.map))
+        print((bcolors.OKBLUE + "- " + bcolors.ENDC) * len(self.map))
 
 
         for column in range(len(self.map)):
-            print("|", end=" ")
+            print(bcolors.OKBLUE + "|" + bcolors.ENDC, end=" ")
             for row in range(len(self.map[column])):
                 value = self.map[column][row]
                 if value != 0:
                     value = self.printList[value]
-
-                print(value, end=" ")
+                    print(bcolors.WARNING + str(value) + bcolors.ENDC, end=" ")
+                else:
+                
+                    print(bcolors.HEADER + str(value) + bcolors.ENDC, end=" ")
             if column + 1 != len(self.map):
-                print("|\n")
+                print(bcolors.OKBLUE + "|" + bcolors.ENDC, end="\n\n")
             else:
-                print("|")
+                print(bcolors.OKBLUE + "|" + bcolors.ENDC)
         print("  ", end="")
-        print("- " * len(self.map))
+        print((bcolors.OKBLUE + "- " + bcolors.ENDC) * len(self.map))
         print("\n\n")
