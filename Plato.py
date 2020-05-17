@@ -22,12 +22,13 @@ class Plato:
     printList = {1:"^",2:"<",3:"_",4:">"}
     
 
-    def __init__(self, size=(5,5), direction="n", position=(0,0), center=True, printStage=True, deleteOnInstruction=False):
+    def __init__(self, size=(5,5), direction="n", position=(0,0), center=True, printStage=True, deleteOnInstruction=False, test=False):
         self.printStage = printStage
         self.terminate = False
         self.size = size
         self.position = position
         self.deleteOnInstruction = deleteOnInstruction
+        self.test = test
 
         # Eğer direction n w s e değilse sonlandır
         try:
@@ -82,16 +83,23 @@ class Plato:
                 print("  ", bcolors.WARNING + instruction + bcolors.ENDC)
                 self._print_map()
         
-        # Eğer printStage değil ise map'in son şeklini bastır
-        if not self.printStage:
+        # Eğer printStage değil ise ve test değilse map'in son şeklini bastır
+        if not self.printStage and not self.test:
             print(" ", *instructions)
             self._print_map()
+
+        # Rover'ın son pozisyonunu döndür
+        y, x = self.getPos()
+        y, x = y+1, x+1
+        
         
         # Eğer deleteOnInstruction ise map'i restart et
         if self.deleteOnInstruction:
             self._restart_map(self.size, self.position)
 
-        
+        return y, x
+
+
 
     def move(self):
         column, row = self.getPos()
@@ -188,7 +196,10 @@ class Plato:
         del self.map
         self.map = []
         self._init_map(self.size, self.position)
-        print(bcolors.HEADER + "Reset\n" + bcolors.ENDC)
+        
+        # Eğer test için çalıştırılmıyorsa
+        if not self.test:
+            print(bcolors.HEADER + "Reset\n" + bcolors.ENDC)
 
     # Map'i ve rover'i ekrana bastır
     def _print_map(self):

@@ -25,5 +25,5 @@ from Plato import Plato
  
 		
 plato = Plato(size=(5,5), position=(1,3), direction="n", center=True, printStage=True, deleteOnInstruction=True)
-plato.instructions("m")
-plato.instructions("ml")
+y, x = plato.instructions("m")
+y1, x1 = plato.instructions("ml")
