@@ -1,4 +1,5 @@
-from Plato import Plato
+from Plateau import Plateau
+from Rover import Rover
 
 class Colors:
     OKGREEN = '\033[92m'
@@ -9,64 +10,52 @@ class Colors:
 
 
 class MarsRoverTest:
-        
-    def __init__(self, size=(5,5), position=(2,3), direction="n", center=False, printStage=False, deleteOnInstruction=True, test=True):
-        self.mars_rover = Plato(size=size, position=position, direction=direction, center=center, printStage=printStage, deleteOnInstruction=deleteOnInstruction, test=test)
+
+    def __init__(self, plateau, rover):
+        self.plateau = plateau
+        self.rover =rover
         print()
-    
+        
     # Run Single Test
     def test(self, inst, ans):
         
-        y, x = self.mars_rover.instructions(inst)
+        y, x = self.rover.instructions(inst)
                 
-        results = {
-            inst : (y,x ) == ans
-        }
+        result = (y,x) == ans
 
-        self.printResults(results)
-
-    
-    # Run Multiple Tests
-    def tests(self, insts, ans):
-        if len(insts) != len(ans):
-            return None
-        
-        results = {}
-
-        for i, inst in enumerate(insts):
-
-            y, x = self.mars_rover.instructions(inst)
-
-            if (y, x) == ans[i]:
-                results[inst] = True
-            else:
-                results[inst] = False
-
-        self.printResults(results)
+        self.printResult((result,inst))
 
     # Print results
-    def printResults(self, results):
+    def printResult(self, result):
+        ans = result[0]
+        res = result[1]
         
-        for k, v in results.items():
-            if v:
-                print(Colors.HEADER + f"Instruction(s) {Colors.WARNING + k + Colors.HEADER} Result => " + Colors.ENDC + Colors.OKGREEN + str(v) +  u' \u2713' + Colors.ENDC)
+        if ans == True:
+            print(Colors.HEADER + f"Instruction(s) {Colors.WARNING + res + Colors.HEADER} Result => " + Colors.ENDC + Colors.OKGREEN + str(ans) +  u' \u2713' + Colors.ENDC)
 
-            if not v:
-                print(Colors.HEADER + f"Instruction(s) {Colors.WARNING + k + Colors.HEADER} Result => " + Colors.ENDC + Colors.FAIL + str(v) + " x" + Colors.ENDC)
-            print()
+        if ans == False:
+            print(Colors.HEADER + f"Instruction(s) {Colors.WARNING + res + Colors.HEADER} Result => " + Colors.ENDC + Colors.FAIL + str(ans) + " x" + Colors.ENDC)
+        print()
 
 
 def runFirstCase():
-    testMarsRover = MarsRoverTest(size=(5,5), position=(2,3))
+    plateau = Plateau(size=(5,5), position=(2,3), test=True, printStage=False)
     
-    testMarsRover.test("LMLMLMLMM", (1,3))
+    rover = Rover(plateau=plateau)
+    
+    testMarsRover = MarsRoverTest(plateau, rover)
 
+    testMarsRover.test("LMLMLMLMM", (2,3))
+    
 
 def runSecondCase():
-    testMarsRover = MarsRoverTest(size=(5,5), position=(3,3))
+    plateau = Plateau(size=(5,5), position=(3,3), test=True, printStage=False)
+    
+    rover = Rover(plateau=plateau, direction="e")
+    
+    testMarsRover = MarsRoverTest(plateau, rover)
 
-    testMarsRover.test("MMRMMRMRRM", (1,5))
-
+    testMarsRover.test("MMRMMRMRRM", (5,5))
 
 
 if __name__ == "__main__":

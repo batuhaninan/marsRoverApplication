@@ -8,7 +8,7 @@ class bcolors:
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
 
-class Plato:
+class Plateau:
     moveList = ["m", "move", "i", "ileri"]
     
     directionList = ["n", "w", "s", "e"]
@@ -22,22 +22,14 @@ class Plato:
     printList = {1:"^",2:"<",3:"_",4:">"}
     
 
-    def __init__(self, size=(5,5), direction="n", position=(0,0), center=True, printStage=True, deleteOnInstruction=False, test=False):
+    def __init__(self, size=(5,5), position=(0,0), center=True, printStage=True, deleteOnInstruction=False, test=False):
         self.printStage = printStage
         self.terminate = False
         self.size = size
-        self.position = position
         self.deleteOnInstruction = deleteOnInstruction
         self.test = test
-
-        # Eğer direction n w s e değilse sonlandır
-        try:
-            self.directionList.index(direction)
-        except ValueError:
-            print(bcolors.FAIL + "ValueError: Please enter the initial direction correctly. ( n | w | s | e )" + bcolors.ENDC)
-            exit()
-
-        self.direction = direction
+        self.position = position
+       
         self.map = []
 
         column, row = self.position
@@ -46,11 +38,27 @@ class Plato:
         # Eğer center ise self.position'ı center olarak ayarla
         if center:
             self.position = (self.size[0] // 2, self.size[1] // 2)
+        
+        
+    def initMap(self):
         self._init_map(self.size, self.position)
         
         # Eğer printStage ise ekranı bastır
-        if printStage:
+        if self.printStage:
             self._print_map()
+
+    def setSpeed(self, speed):
+        self.speed = speed
+
+    def setDirection(self, direction):
+        self.direction = direction
+
+        # Eğer direction n w s e değilse sonlandır
+        try:
+            self.directionList.index(direction)
+        except ValueError:
+            print(bcolors.FAIL + "ValueError: Please enter the initial direction correctly. ( n | w | s | e )" + bcolors.ENDC)
+            exit()
 
 
     # Rover'ın şu anki konumunu döndür
