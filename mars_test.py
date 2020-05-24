@@ -18,10 +18,13 @@ class MarsRoverTest:
         
     # Run Single Test
     def test(self, inst, ans):
-        
+        print(inst, ans)
         y, x = self.rover.instructions(inst)
                 
         result = (y,x) == ans
+
+        if (y, x) == (None, None):
+            result = False
 
         self.printResult((result,inst))
 
@@ -39,9 +42,9 @@ class MarsRoverTest:
 
 
 def runFirstCase():
-    plateau = Plateau(size=(5,5), position=(2,3), test=True, printStage=False)
+    plateau = Plateau(size=(5,5), test=True, printStage=False)
     
-    rover = Rover(plateau=plateau)
+    rover = Rover(plateau=plateau, position=(2,3))
     
     testMarsRover = MarsRoverTest(plateau, rover)
 
@@ -49,9 +52,9 @@ def runFirstCase():
     
 
 def runSecondCase():
-    plateau = Plateau(size=(5,5), position=(3,3), test=True, printStage=False)
+    plateau = Plateau(size=(5,5), test=True, printStage=False)
     
-    rover = Rover(plateau=plateau, direction="e")
+    rover = Rover(plateau=plateau, direction="e", position=(3,3))
     
     testMarsRover = MarsRoverTest(plateau, rover)
 

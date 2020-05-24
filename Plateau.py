@@ -22,22 +22,14 @@ class Plateau:
     printList = {1:"^",2:"<",3:"_",4:">"}
     
 
-    def __init__(self, size=(5,5), position=(0,0), center=True, printStage=True, deleteOnInstruction=False, test=False):
+    def __init__(self, size=(5,5), printStage=False, deleteOnInstruction=True, test=False):
         self.printStage = printStage
         self.terminate = False
         self.size = size
         self.deleteOnInstruction = deleteOnInstruction
         self.test = test
-        self.position = position
        
         self.map = []
-
-        column, row = self.position
-        self.position = column - 1, row - 1
-        
-        # Eğer center ise self.position'ı center olarak ayarla
-        if center:
-            self.position = (self.size[0] // 2, self.size[1] // 2)
         
         
     def initMap(self):
@@ -46,6 +38,18 @@ class Plateau:
         # Eğer printStage ise ekranı bastır
         if self.printStage:
             self._print_map()
+
+    def setInitialPosition(self, position, center):
+        self.position = position
+        self.center = center
+
+        column, row = self.position
+        self.position = column - 1, row - 1
+        
+        # Eğer center ise self.position'ı center olarak ayarla
+        if center:
+            self.position = (self.size[0] // 2, self.size[1] // 2)
+
 
     def setSpeed(self, speed):
         self.speed = speed
@@ -79,7 +83,7 @@ class Plateau:
             
             # Eğer ileri adımında hata olmuşsa sonlandır
             if self.terminate:
-                return
+                return (None,None)
 
             # Eğer komut l ya da r ise
             if instruction in self.rotateList:
@@ -121,9 +125,9 @@ class Plateau:
             # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
-                if column - 1 != -1:
+                if column - self.speed != -1:
                     self.map[column][row] = 0
-                    self.map[column - 1][row] = value
+                    self.map[column - self.speed][row] = value
                 else:
                     self.terminate = True
                     print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
@@ -137,7 +141,7 @@ class Plateau:
 
             try:
                 self.map[column][row] = 0
-                self.map[column + 1][row] = value
+                self.map[column + self.speed][row] = value
             except IndexError:
                 self.terminate = True
                 print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
@@ -147,9 +151,9 @@ class Plateau:
             # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
-                if row - 1 != -1:
+                if row - self.speed != -1:
                     self.map[column][row] = 0
-                    self.map[column][row - 1] = value
+                    self.map[column][row - self.speed] = value
                 else:
                     self.terminate = True
                     print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
@@ -163,7 +167,7 @@ class Plateau:
 
             try:
                 self.map[column][row] = 0
-                self.map[column][row + 1] = value
+                self.map[column][row + self.speed] = value
             except IndexError:
                 self.terminate = True
                 print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
