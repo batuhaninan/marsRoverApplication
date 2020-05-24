@@ -10,7 +10,7 @@
 ## Rover
    ### Parameters
    * plateau: The plateau which rover will be on
-   * speed: How far the rover go on every ' move ' instruction **( default = 1 )**
+   * speed: How far the rover will go on every ' move ' instruction **( default = 1 )**
    * direction: Initial direction of the rover as cardinal direction **( default = n )**
    * position: Initial position of the rover **( default = (0,0) )**
    * center: Set the rover's position to the center of the map **_{ WARNING : This option will override the position parameter }_
