@@ -6,7 +6,7 @@
    * printStage: Print the updated map every round **( default = False )**
    * deleteOnInstruction: Delete the map after every set of instructions **( default = True )**
    * test: Run as test **( default = False )**
-
+--------------------
 ## Rover
    ### Parameters
    * plateau: The plateau which rover will be on
@@ -17,5 +17,5 @@
    &nbsp; ( default = False )** 
  
         
-
+--------------------
 ## Author : Batuhan INAN
