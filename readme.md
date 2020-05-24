@@ -3,9 +3,9 @@
 ## Plateau
  ### Parameters
    * size: Size of the map **(default=5x5)**
-    * printStage: Print the updated map every round **(default=False)**
-     * deleteOnInstruction: Delete the map after every set of instructions **(default=True)**
-     * test: Run as test **(default=False)**
+   * printStage: Print the updated map every round **(default=False)**
+   * deleteOnInstruction: Delete the map after every set of instructions **(default=True)**
+   * test: Run as test **(default=False)**
 
 ## Rover
    ### Parameters
