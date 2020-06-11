@@ -15,12 +15,12 @@ class MarsRoverTest:
         self.plateau = plateau
         self.rover =rover
         print()
-        
+
     # Run Single Test
     def test(self, inst, ans):
         print(inst, ans)
         y, x = self.rover.instructions(inst)
-                
+
         result = (y,x) == ans
 
         if (y, x) == (None, None):
@@ -32,7 +32,7 @@ class MarsRoverTest:
     def printResult(self, result):
         ans = result[0]
         res = result[1]
-        
+
         if ans == True:
             print(Colors.HEADER + f"Instruction(s) {Colors.WARNING + res + Colors.HEADER} Result => " + Colors.ENDC + Colors.OKGREEN + str(ans) +  u' \u2713' + Colors.ENDC)
 
@@ -42,20 +42,20 @@ class MarsRoverTest:
 
 
 def runFirstCase():
-    plateau = Plateau(size=(5,5), test=True, printStage=False)
-    
+    plateau = Plateau(size=(5,5), test=True, printStage=True)
+
     rover = Rover(plateau=plateau, position=(2,3))
-    
+
     testMarsRover = MarsRoverTest(plateau, rover)
 
     testMarsRover.test("LMLMLMLMM", (2,3))
-    
+
 
 def runSecondCase():
     plateau = Plateau(size=(5,5), test=True, printStage=False)
-    
+
     rover = Rover(plateau=plateau, direction="e", position=(3,3))
-    
+
     testMarsRover = MarsRoverTest(plateau, rover)
 
     testMarsRover.test("MMRMMRMRRM", (5,5))
@@ -64,4 +64,4 @@ def runSecondCase():
 if __name__ == "__main__":
     runFirstCase()
     runSecondCase()
-    
+
