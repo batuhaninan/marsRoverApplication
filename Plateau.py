@@ -35,7 +35,6 @@ class Plateau:
     def initMap(self):
         self._init_map(self.size, self.position)
 
-        # Eğer printStage ise ekranı bastır
         if self.printStage:
             self._print_map()
 
@@ -46,7 +45,6 @@ class Plateau:
         column, row = self.position
         self.position = column - 1, row - 1
 
-        # Eğer center ise self.position'ı center olarak ayarla
         if center:
             self.position = (self.size[0] // 2, self.size[1] // 2)
 
@@ -57,7 +55,6 @@ class Plateau:
     def setDirection(self, direction):
         self.direction = direction
 
-        # Eğer direction n w s e değilse sonlandır
         try:
             self.directionList.index(direction)
         except ValueError:
@@ -65,7 +62,6 @@ class Plateau:
             exit()
 
 
-    # Rover'ın şu anki konumunu döndür
     def getPos(self):
         for column in range(len(self.map)):
             for row in range(len(self.map[column])):
@@ -77,35 +73,28 @@ class Plateau:
 
             instruction = instruction.lower()
 
-            # Eğer komut ileri ise
             if instruction in self.moveList:
                 self.move()
 
-            # Eğer ileri adımında hata olmuşsa sonlandır
             if self.terminate:
                 return (None,None)
 
-            # Eğer komut l ya da r ise
             if instruction in self.rotateList:
                 self.rotate(instruction)
 
 
-            # Eğer printStage ise her stage sonunda ekrana map'i bastır
             if self.printStage:
                 print("  ", bcolors.WARNING + instruction + bcolors.ENDC)
                 self._print_map()
 
-        # Eğer printStage değil ise ve test değilse map'in son şeklini bastır
         if not self.printStage and not self.test:
             print(" ", *instructions)
             self._print_map()
 
-        # Rover'ın son pozisyonunu döndür
         y, x = self.getPos()
         y, x = y+1, x+1
 
 
-        # Eğer deleteOnInstruction ise map'i restart et
         if self.deleteOnInstruction:
             self._restart_map(self.size, self.position)
 
@@ -120,9 +109,7 @@ class Plateau:
         columnPrint = column + 1
         rowPrint = row + 1
 
-        # Eğer şuan rover n'a bakıyorsa
         if value == 1:
-            # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
                 if column - self.speed != -1:
@@ -135,9 +122,7 @@ class Plateau:
                 self.terminate = True
                 print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
 
-        # Eğer şuan rover s'a bakıyorsa
         if value == 3:
-            # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
                 self.map[column][row] = 0
@@ -146,9 +131,7 @@ class Plateau:
                 self.terminate = True
                 print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
 
-        # Eğer şuan rover w'e bakıyorsa
         if value == 2:
-            # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
                 if row - self.speed != -1:
@@ -161,9 +144,7 @@ class Plateau:
                 self.terminate = True
                 print(bcolors.FAIL + f"IndexError: You have exceeded the map limit. ( Last Pos : x = {columnPrint} , y = {rowPrint} )" + bcolors.ENDC)
 
-        # Eğer şuan rover e'e bakıyorsa
         if value == 4:
-            # İlerlemeyi dene, olmazsa hata mesajı bastır
 
             try:
                 self.map[column][row] = 0
@@ -174,14 +155,12 @@ class Plateau:
 
     def rotate(self, direction):
 
-        # Eger instruction left ise
         if direction in self.leftList:
             column, row = self.getPos()
 
             value = self.map[column][row]
             self.map[column][row] = value % 4 + 1
 
-        # Eger instruction right ise
         if direction in self.rightList:
             column, row = self.getPos()
 
@@ -192,7 +171,6 @@ class Plateau:
 
             self.map[column][row] = value
 
-    # Map'i verilen size ve position'a göre başlat
     def _init_map(self, size, position):
         for column in range(size[0]):
             current_row = []
@@ -203,17 +181,14 @@ class Plateau:
                     current_row.append(0)
             self.map.append(current_row)
 
-    # Map'i verilen size ve position'a göre yenile
     def _restart_map(self, size, position):
         del self.map
         self.map = []
         self._init_map(self.size, self.position)
 
-        # Eğer test için çalıştırılmıyorsa
         if not self.test:
             print(bcolors.HEADER + "Reset\n" + bcolors.ENDC)
 
-    # Map'i ve rover'i ekrana bastır
     def _print_map(self):
         print("  ", end="")
         print((bcolors.OKBLUE + "- " + bcolors.ENDC) * len(self.map))
